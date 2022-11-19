@@ -1,7 +1,6 @@
 package com.alex.blog.controllers;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alex.blog.dto.PublicationDTO;
+import com.alex.blog.dto.PublicationResponse;
 import com.alex.blog.services.IPublicationService;
+import static com.alex.blog.utilities.AppConstants.*;
 
 
 @RestController
@@ -28,7 +29,6 @@ public class PublicationController {
     @Autowired
     private IPublicationService publicationService;
 
-
     /* SIN paginado    
     @GetMapping
     public List<PublicationDTO> getAllPublications() {
@@ -37,11 +37,15 @@ public class PublicationController {
     } */
 
 
+    // Se crea una clase de la respuesta
     @GetMapping
-    public List<PublicationDTO> getAllPublications(@RequestParam(defaultValue = "0", required = false) int page,
-            @RequestParam(defaultValue = "10", required = false) int size) {
-        
-        return publicationService.getAll(page, size);
+    public PublicationResponse getAllPublications(
+            @RequestParam(defaultValue = DEFAULT_PAGE_NUMBER, required = false) int page,
+            @RequestParam(defaultValue = DEFAULT_PAGE_SIZE, required = false) int size,
+            @RequestParam(defaultValue = DEFAULT_SORT_BY, required = false) String sortBy,
+            @RequestParam(defaultValue = DEFAULT_SORT_DIR, required = false) String sortDir) {
+
+        return publicationService.getAll(page, size, sortBy, sortDir);
     }
 
 
@@ -79,7 +83,6 @@ public class PublicationController {
 
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
     }
-
 
 
 

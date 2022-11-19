@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alex.blog.dto.PublicationDTO;
+import com.alex.blog.dto.PublicationResponse;
 import com.alex.blog.entities.Publication;
 import com.alex.blog.exceptions.ResourceNotFoundExcepion;
 import com.alex.blog.repositories.IPublicationRepository;
@@ -52,15 +54,30 @@ public class PublicationServiceImpl implements IPublicationService {
         return publications.stream().map(p -> mapToDTO(p)).collect(Collectors.toList());
     } */
     
-    // Paginado
+    // pagination and sorting
     @Override
-    public List<PublicationDTO> getAll(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public PublicationResponse getAll(int page, int size, String sortBy, String sortDir) {
+        
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<Publication> publications = publicatinoRepository.findAll(pageable);
 
         List<Publication> publicationsList = publications.getContent();
+        List<PublicationDTO> content = publicationsList.stream().map(p -> mapToDTO(p)).collect(Collectors.toList());
 
-        return publicationsList.stream().map(p -> mapToDTO(p)).collect(Collectors.toList());
+        // construimos la response
+        PublicationResponse publicationResponse = new PublicationResponse();
+        publicationResponse.setContent(content);
+        publicationResponse.setPageNumber(publications.getNumber());
+        publicationResponse.setSize(publications.getSize());
+        publicationResponse.setTotalElements(publications.getTotalElements());
+        publicationResponse.setTotalPages(publications.getTotalPages());
+        publicationResponse.setLastOne(publications.isLast());
+
+        return publicationResponse;
+
     }
 
     
