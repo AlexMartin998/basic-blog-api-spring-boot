@@ -1,10 +1,17 @@
 package com.alex.blog.entities;
 
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -12,7 +19,7 @@ import javax.persistence.Table;
 @Entity
 // @Table(name = "publications", uniqueConstraints = {@UniqueConstraint(columnNames = {"title"})}) // title unique
 @Table(name = "publications")
-public class Publication {
+public class Publication implements Serializable {
   
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)   // auto-incremental in MySQL
@@ -28,15 +35,22 @@ public class Publication {
   private String content;
 
 
+  @OneToMany(mappedBy = "publication", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<Comment> comments = new HashSet<>();
+  
+
+
 
   public Publication() {}
 
-  public Publication(Long id, String title, String description, String content) {
-    this.id = id;
-    this.title = title;
-    this.description = description;
-    this.content = content;
-  }
+  // public Publication(Long id, String title, String description, String content) {
+  //   this.id = id;
+  //   this.title = title;
+  //   this.description = description;
+  //   this.content = content;
+  // }
+
+
 
 
 
@@ -73,7 +87,9 @@ public class Publication {
     this.content = content;
   }
 
-  
 
+
+  // Eclipse pide esto, pero vscode no lo sugiere
+  private static final long serialVersionUID = 1L;
 
 }
