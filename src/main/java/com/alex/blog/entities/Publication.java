@@ -38,7 +38,7 @@ public class Publication implements Serializable {
 
 
   @OneToMany(mappedBy = "publication", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-  @JsonManagedReference // establecemos la serializacion en 1 direccion para evitar el loop infinoto SIN ignorar las invoices
+  @JsonManagedReference // establecemos la serializacion en 1 direccion para evitar el loop infinoto SIN ignorar los comments
   private Set<Comment> comments = new HashSet<>();
   
 
