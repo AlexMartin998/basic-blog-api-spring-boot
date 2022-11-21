@@ -92,6 +92,22 @@ public class CommentServiceImpl implements ICommentService {
         return mapToDTO(updatedComment);
     }
 
+
+    @Override
+    public void deleteComment(Long publicationId, Long id) {
+        Publication publication = publicationRepository.findById(publicationId)
+                .orElseThrow(() -> new ResourceNotFoundExcepion("Publication", "ID", publicationId));
+
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundExcepion("Comment", "ID", id));
+
+        // verify that the comment belongs to the publication
+        if (!comment.getPublication().getId().equals(publication.getId()))
+            throw new BlogAppException(HttpStatus.BAD_REQUEST, "Comment does not belong to the publication!");
+        
+
+        commentRepository.deleteById(id);
+    }
     
 
 
@@ -119,6 +135,9 @@ public class CommentServiceImpl implements ICommentService {
 
         return commentDTO;
     }
+
+
+ 
 
 
 

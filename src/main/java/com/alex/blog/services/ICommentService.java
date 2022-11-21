@@ -20,4 +20,6 @@ public interface ICommentService {
 
     public CommentDTO updateComment(Long publicationId, Long id, CommentDTO commentDTO);
 
+    public void deleteComment(Long publicationId, Long id);
+
 }
