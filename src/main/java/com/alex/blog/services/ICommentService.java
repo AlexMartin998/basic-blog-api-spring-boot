@@ -15,7 +15,9 @@ public interface ICommentService {
 
     public List<CommentDTO> getAllCommentsByPublicationId(long publicationId);
 
-    
+
     public CommentDTO getCommentById(long publicationId, long id);
+
+    public CommentDTO updateComment(Long publicationId, Long id, CommentDTO commentDTO);
 
 }
