@@ -2,14 +2,26 @@ package com.alex.blog.dto;
 
 import java.util.Set;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 import com.alex.blog.entities.Comment;
 
 public class PublicationDTO {
 
     private Long id;
+
+    @NotEmpty(message = "Some custome message - not empty!")
+    @Size(min = 3, message = "Some custome message")
     private String title;
+
+    @NotEmpty
+    @Size(min = 3, message = "Size must be greater than 3 char!")
     private String description;
+
+    @NotEmpty
     private String content;
+
     private Set<Comment> comments;
 
 

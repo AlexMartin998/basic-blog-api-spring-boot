@@ -1,11 +1,22 @@
 package com.alex.blog.dto;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 public class CommentDTO {
 
     private long id;
+
+    @NotEmpty(message = "Name is required!")
     private String name;
+
+    @NotEmpty(message = "Email is required!")
+    @Email(message = "Invalid email!")
     private String email;
+
+    @NotEmpty
+    @Size(min = 3, message = "Size must be greater than 3 char")
     private String body;
 
     

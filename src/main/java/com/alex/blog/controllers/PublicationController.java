@@ -3,6 +3,8 @@ package com.alex.blog.controllers;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,14 +59,14 @@ public class PublicationController {
 
 
     @PostMapping
-    public ResponseEntity<PublicationDTO> savePublication(@RequestBody PublicationDTO publicationDTO) {
+    public ResponseEntity<PublicationDTO> savePublication(@Valid @RequestBody PublicationDTO publicationDTO) {
 
         return new ResponseEntity<>(publicationService.createPublication(publicationDTO), HttpStatus.CREATED);
     }
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<PublicationDTO> updatePublication(@RequestBody PublicationDTO publicationDTO,
+    public ResponseEntity<PublicationDTO> updatePublication(@Valid @RequestBody PublicationDTO publicationDTO,
             @PathVariable Long id) {
 
         PublicationDTO responsePublication = publicationService.update(publicationDTO, id);
