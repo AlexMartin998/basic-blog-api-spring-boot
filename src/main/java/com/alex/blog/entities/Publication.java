@@ -14,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 
 @Entity
@@ -36,6 +38,7 @@ public class Publication implements Serializable {
 
 
   @OneToMany(mappedBy = "publication", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonManagedReference // establecemos la serializacion en 1 direccion para evitar el loop infinoto SIN ignorar las invoices
   private Set<Comment> comments = new HashSet<>();
   
 
@@ -87,9 +90,17 @@ public class Publication implements Serializable {
     this.content = content;
   }
 
+  public Set<Comment> getComments() {
+    return comments;
+  }
+
+  public void setComments(Set<Comment> comments) {
+    this.comments = comments;
+  }
 
 
-  // Eclipse pide esto, pero vscode no lo sugiere
+
+// Eclipse pide esto, pero vscode no lo sugiere
   private static final long serialVersionUID = 1L;
 
 }

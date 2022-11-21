@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "comments")
 public class Comment implements Serializable {
@@ -25,6 +27,7 @@ public class Comment implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "publication_id", nullable = false)      // genera la foreign key
+    @JsonBackReference  // evitar su serializacion x ser bidireccional dara un loop infinito - asi lo solvento SIN ignorar comments
     private Publication publication;
 
 
@@ -41,7 +44,6 @@ public class Comment implements Serializable {
 
     
     // 
-
     public long getId() {
         return id;
     }
