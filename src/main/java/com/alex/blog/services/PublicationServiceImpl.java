@@ -3,7 +3,7 @@ package com.alex.blog.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +21,9 @@ import com.alex.blog.repositories.IPublicationRepository;
 
 @Service
 public class PublicationServiceImpl implements IPublicationService {
+
+    @Autowired    
+    private ModelMapper modelMapper;
 
     @Autowired  // jpaRepository ya lo hace un bean
     private IPublicationRepository publicatinoRepository;
@@ -122,26 +125,31 @@ public class PublicationServiceImpl implements IPublicationService {
 
     // DTO to entity
     private Publication mapToEntity(PublicationDTO publicationDTO) {
-        Publication publication = new Publication();
+        Publication publication = modelMapper.map(publicationDTO, Publication.class);
 
+        return publication;
+
+        /* Publication publication = new Publication();
         publication.setTitle(publicationDTO.getTitle());
         publication.setDescription(publicationDTO.getDescription());
         publication.setContent(publicationDTO.getContent());
-        
-        return publication;
+        return publication; */
     }
 
 
     // Entidad a DTO
     private PublicationDTO mapToDTO(Publication publication) {
-        PublicationDTO publicationDTO = new PublicationDTO();
+        
+        PublicationDTO publicationDTO = modelMapper.map(publication, PublicationDTO.class);
 
+        return publicationDTO;
+
+        /*PublicationDTO publicationDTO = new PublicationDTO();
         publicationDTO.setId(publication.getId());
         publicationDTO.setTitle(publication.getTitle());
         publicationDTO.setDescription(publication.getDescription());
         publicationDTO.setContent(publication.getContent());
-
-        return publicationDTO;
+        return publicationDTO; */
     }
 
 

@@ -3,6 +3,7 @@ package com.alex.blog.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,9 @@ import com.alex.blog.repositories.IPublicationRepository;
 
 @Service
 public class CommentServiceImpl implements ICommentService {
+
+    @Autowired    
+    private ModelMapper modelMapper;
 
     @Autowired
     private ICommentRepository commentRepository;
@@ -113,12 +117,7 @@ public class CommentServiceImpl implements ICommentService {
 
     // DTO to entity
     private Comment maptToEntity(CommentDTO commentDTO) {
-        Comment comment = new Comment();
-        
-        comment.setId(commentDTO.getId());
-        comment.setName(commentDTO.getName());
-        comment.setEmail(commentDTO.getEmail());
-        comment.setBody(commentDTO.getBody());
+        Comment comment = modelMapper.map(commentDTO, Comment.class);
 
         return comment;
     }
@@ -126,27 +125,10 @@ public class CommentServiceImpl implements ICommentService {
 
     // entity to DTO
     private CommentDTO mapToDTO(Comment comment) {
-        CommentDTO commentDTO = new CommentDTO();
-
-        commentDTO.setId(comment.getId());
-        commentDTO.setName(comment.getName());
-        commentDTO.setEmail(comment.getEmail());
-        commentDTO.setBody(comment.getBody());
+        CommentDTO commentDTO = modelMapper.map(comment, CommentDTO.class);
 
         return commentDTO;
     }
-
-
- 
-
-
-
-
-
-
-
-
-
 
     
 }
