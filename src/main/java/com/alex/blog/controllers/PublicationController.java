@@ -32,7 +32,7 @@ public class PublicationController {
     @Autowired
     private IPublicationService publicationService;
 
-    /* SIN paginado    
+    /* without pagination
     @GetMapping
     public List<PublicationDTO> getAllPublications() {
         
@@ -40,7 +40,7 @@ public class PublicationController {
     } */
 
 
-    // Se crea una clase de la respuesta
+    // create response class
     @GetMapping
     @Secured("ROLE_ADMIN")
     public PublicationResponse getAllPublications(
@@ -81,14 +81,14 @@ public class PublicationController {
 
     @DeleteMapping("/{id}")
     @Secured("ROLE_ADMIN")
-    public ResponseEntity<?> deletePublication(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> deletePublication(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
 
         publicationService.delete(id);
 
         response.put("message", "Publication has been successfully deleted!");
 
-        return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 

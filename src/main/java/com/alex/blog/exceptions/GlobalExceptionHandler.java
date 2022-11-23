@@ -7,6 +7,8 @@ import java.util.Map;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -41,6 +43,30 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {    
                 webRequest.getDescription((false)));
 
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorDetails> hanlderBadCredentialsException(BadCredentialsException exception,
+            WebRequest webRequest) {
+
+        ErrorDetails errorDetails = new ErrorDetails(new Date(),
+                "There was a problem logging in. Check your email and password or create an account.",
+                webRequest.getDescription((false)));
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorDetails> hanlderBadCredentialsException(AccessDeniedException exception,
+            WebRequest webRequest) {
+
+        ErrorDetails errorDetails = new ErrorDetails(new Date(),
+                "User without required permissions!",
+                webRequest.getDescription((false)));
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.FORBIDDEN);
     }
 
 
