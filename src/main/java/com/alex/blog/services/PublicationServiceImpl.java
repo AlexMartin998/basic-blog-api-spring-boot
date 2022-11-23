@@ -32,22 +32,17 @@ public class PublicationServiceImpl implements IPublicationService {
     @Override
     @Transactional    // escritura en DB
     public PublicationDTO createPublication(PublicationDTO publicationDTO) {
-        // DTO to Entity <- Recibimos JSON en la request y lo convertimos a entidad de java
         Publication publication = mapToEntity(publicationDTO);
         
-        // persistimos la entidad - usamos el JpaRepository
         Publication newPublication = publicatinoRepository.save(publication);
 
-
-        // Entity to DTO  -  lo q persistimos en DB lo transformanos a JSON para enviarlo como response a la request
         PublicationDTO publicationResponse = mapToDTO(newPublication);
-
 
         return publicationResponse;
     }
 
 
-/*  // SIN paginado   
+/*  // without pagination
     @Override
     @Transactional(readOnly = true)
     public List<PublicationDTO> getAll() {
@@ -59,6 +54,7 @@ public class PublicationServiceImpl implements IPublicationService {
     
     // pagination and sorting
     @Override
+    @Transactional(readOnly = true)
     public PublicationResponse getAll(int page, int size, String sortBy, String sortDir) {
         
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
@@ -86,6 +82,7 @@ public class PublicationServiceImpl implements IPublicationService {
     
 
     @Override
+    @Transactional(readOnly = true)
     public PublicationDTO getByID(Long id) {
         Publication publication = publicatinoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundExcepion("Publication", "ID", id));
@@ -96,6 +93,7 @@ public class PublicationServiceImpl implements IPublicationService {
 
 
     @Override
+    @Transactional
     public PublicationDTO update(PublicationDTO publicationDTO, Long id) {
         Publication publication = publicatinoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundExcepion("Publication", "ID", id));
@@ -114,6 +112,7 @@ public class PublicationServiceImpl implements IPublicationService {
 
 
     @Override
+    @Transactional
     public void delete(Long id) {
         publicatinoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundExcepion("Publication", "ID", id));

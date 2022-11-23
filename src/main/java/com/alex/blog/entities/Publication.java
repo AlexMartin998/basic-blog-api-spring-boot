@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class Publication implements Serializable {
   
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)   // auto-incremental in MySQL
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @Column(nullable = false, unique = true)
@@ -45,14 +45,6 @@ public class Publication implements Serializable {
 
 
   public Publication() {}
-
-  // public Publication(Long id, String title, String description, String content) {
-  //   this.id = id;
-  //   this.title = title;
-  //   this.description = description;
-  //   this.content = content;
-  // }
-
 
 
 

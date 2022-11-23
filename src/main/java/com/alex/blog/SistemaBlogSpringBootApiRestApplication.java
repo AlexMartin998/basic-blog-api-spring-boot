@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Bean;
 public class SistemaBlogSpringBootApiRestApplication {
 
 
-	// registra este bean para poder inject
 	@Bean
 	public ModelMapper modelMapper() {
 		return new ModelMapper();

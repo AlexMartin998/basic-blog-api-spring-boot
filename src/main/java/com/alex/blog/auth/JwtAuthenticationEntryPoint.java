@@ -19,14 +19,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     
-    // Errores de un user NO auth   -   error de q NO esta auth
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
             AuthenticationException authException) throws IOException, ServletException {
                 
         // response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage());
 
-        // // build the response Body
         Map<String, Object> body = new HashMap<>();
         body.put("message", authException.getMessage());
 

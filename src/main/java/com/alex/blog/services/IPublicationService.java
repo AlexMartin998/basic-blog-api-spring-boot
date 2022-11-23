@@ -8,7 +8,7 @@ public interface IPublicationService {
     public PublicationDTO createPublication(PublicationDTO publicationDTO);
 
     // public List<PublicationDTO> getAll();
-    // paginado
+    // pagination
     public PublicationResponse getAll(int page, int size, String sortBy, String sortDir);
 
     public PublicationDTO getByID(Long id);

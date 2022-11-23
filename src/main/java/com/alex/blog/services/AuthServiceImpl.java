@@ -9,7 +9,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alex.blog.auth.provider.JwtTokenProvider;
 import com.alex.blog.dto.JWTAuthResponseDTO;
@@ -36,6 +38,9 @@ public class AuthServiceImpl implements IAuthService {
     private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
+	private PasswordEncoder passwordEncoder;
+
+    @Autowired
     private ModelMapper modelMapper;
 
     @Autowired
@@ -59,6 +64,7 @@ public class AuthServiceImpl implements IAuthService {
 
 
     @Override
+    @Transactional
     public RegisterResponse registerNewUser(RegisterDTO registerDTO) {
         if (userRepository.existsByEmail(registerDTO.getEmail())
                 || userRepository.existsByUsername(registerDTO.getUsername())) {
@@ -78,8 +84,9 @@ public class AuthServiceImpl implements IAuthService {
 
 
     // DTO to entity
-    private Usuario mapToEntity(RegisterDTO publicationDTO) {
-        Usuario newUser = modelMapper.map(publicationDTO, Usuario.class);
+    private Usuario mapToEntity(RegisterDTO registerDTO) {
+        Usuario newUser = modelMapper.map(registerDTO, Usuario.class);
+        newUser.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
 
         return newUser;
     }
@@ -92,7 +99,6 @@ public class AuthServiceImpl implements IAuthService {
     }
 
     private JWTAuthResponseDTO mapToJwtDTO(String token) {
-
         JWTAuthResponseDTO jwtAuthResponseDTO = new JWTAuthResponseDTO(token);
 
         return jwtAuthResponseDTO;

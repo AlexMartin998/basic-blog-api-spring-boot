@@ -40,7 +40,6 @@ public class PublicationController {
     } */
 
 
-    // create response class
     @GetMapping
     @Secured("ROLE_ADMIN")
     public PublicationResponse getAllPublications(

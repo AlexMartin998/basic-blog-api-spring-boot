@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alex.blog.dto.CommentDTO;
 import com.alex.blog.entities.Comment;
@@ -32,6 +33,7 @@ public class CommentServiceImpl implements ICommentService {
 
 
     @Override
+    @Transactional
     public CommentDTO createComment(long publicationId, CommentDTO commentDTO) {
         Comment comment = maptToEntity(commentDTO);
         Publication publication = publicationRepository.findById(publicationId)
@@ -46,6 +48,7 @@ public class CommentServiceImpl implements ICommentService {
 
 
     @Override
+    @Transactional(readOnly = true)
     public List<CommentDTO> getAllCommentsByPublicationId(long publicationId) {
         publicationRepository.findById(publicationId)
                 .orElseThrow(() -> new ResourceNotFoundExcepion("Publication", "ID", publicationId));
@@ -57,6 +60,7 @@ public class CommentServiceImpl implements ICommentService {
 
 
     @Override
+    @Transactional(readOnly = true)
     public CommentDTO getCommentById(long publicationId, long id) {
         Publication publication = publicationRepository.findById(publicationId)
                 .orElseThrow(() -> new ResourceNotFoundExcepion("Publication", "ID", publicationId));
@@ -74,6 +78,7 @@ public class CommentServiceImpl implements ICommentService {
 
     
     @Override
+    @Transactional
     public CommentDTO updateComment(Long publicationId, Long id, CommentDTO commentDTO) {
         Publication publication = publicationRepository.findById(publicationId)
                 .orElseThrow(() -> new ResourceNotFoundExcepion("Publication", "ID", publicationId));
@@ -98,6 +103,7 @@ public class CommentServiceImpl implements ICommentService {
 
 
     @Override
+    @Transactional
     public void deleteComment(Long publicationId, Long id) {
         Publication publication = publicationRepository.findById(publicationId)
                 .orElseThrow(() -> new ResourceNotFoundExcepion("Publication", "ID", publicationId));

@@ -38,7 +38,6 @@ public class Usuario implements Serializable {
     private String password;
 
 
-    // Unimos estas 2 tablas en 1 intermedia llamada "users_roles", en la tabla vamos a unir columnas en la q el "user_id" va a estar referenciado al "id" de la tabla user y el "rol_id" va a estar referenciado al "id" de la tabla rol
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Set<Role> authorities = new HashSet<>();
