@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,6 +42,7 @@ public class PublicationController {
 
     // Se crea una clase de la respuesta
     @GetMapping
+    @Secured("ROLE_ADMIN")
     public PublicationResponse getAllPublications(
             @RequestParam(defaultValue = DEFAULT_PAGE_NUMBER, required = false) int page,
             @RequestParam(defaultValue = DEFAULT_PAGE_SIZE, required = false) int size,
@@ -59,6 +61,7 @@ public class PublicationController {
 
 
     @PostMapping
+    @Secured("ROLE_ADMIN")
     public ResponseEntity<PublicationDTO> savePublication(@Valid @RequestBody PublicationDTO publicationDTO) {
 
         return new ResponseEntity<>(publicationService.createPublication(publicationDTO), HttpStatus.CREATED);
@@ -66,6 +69,7 @@ public class PublicationController {
 
 
     @PutMapping("/{id}")
+    @Secured("ROLE_ADMIN")
     public ResponseEntity<PublicationDTO> updatePublication(@Valid @RequestBody PublicationDTO publicationDTO,
             @PathVariable Long id) {
 
@@ -76,6 +80,7 @@ public class PublicationController {
 
 
     @DeleteMapping("/{id}")
+    @Secured("ROLE_ADMIN")
     public ResponseEntity<?> deletePublication(@PathVariable Long id) {
         Map<String, Object> response = new HashMap<>();
 
